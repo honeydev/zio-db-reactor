@@ -11,7 +11,8 @@ object DevApp extends DBReactor {
   val sources: List[Source] = List(
     PGSource(
       host = "localhost",
-      port = 5444,
+      port = 5445,
+      name = "test base 1",
       database = "test_db",
       username = "test",
       password = "test",
@@ -20,6 +21,7 @@ object DevApp extends DBReactor {
     PGSource(
       host = "localhost",
       port = 5445,
+      name = "test base 2",
       database = "test_db",
       username = "test",
       password = "test",

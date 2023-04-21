@@ -15,15 +15,17 @@ class PGDBCommonService(
   def selectSourceData: ZIO[Any, Throwable, PGTableMeta] = {
     val res: ZIO[ZConnectionPool, Throwable, PGTableMeta] = for {
       tablesRowsCounts <- transaction {
-        val resultE = source.tables.map(x => {
-          selectOne(sql"SELECT COUNT(*)".from(x.name).as[Long])
-        })
-        ZIO.collectAll(resultE)
-      }
-    } yield PGTableMeta(name = "testName", rowsCount = tablesRowsCounts.map {
-      case Some(v) => v
-      case _ => 0
-    }.sum)
+                            val resultE =
+                              source.tables.map(x => selectOne(sql"SELECT COUNT(*)".from(x.name).as[Long]))
+                            ZIO.collectAll(resultE)
+                          }
+    } yield PGTableMeta(
+      name = source.name,
+      rowsCount = tablesRowsCounts.map {
+        case Some(v) => v
+        case _       => 0
+      }.sum
+    )
     res.provideLayer(layer).provideLayer(config)
   }
 }

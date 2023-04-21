@@ -17,8 +17,15 @@ case class Field(name: String, `type`: String)
 
 case class Table(name: String, fields: List[Field])
 
-case class PGSource(host: String, port: Int, database: String, username: String, password: String, tables: List[Table])
-    extends Source
+case class PGSource(
+  host: String,
+  port: Int,
+  name: String,
+  database: String,
+  username: String,
+  password: String,
+  tables: List[Table]
+) extends Source
     with PGSourceType {
 
   def sourceServiceF(): SourceServicesFactory =
